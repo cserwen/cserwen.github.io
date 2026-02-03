@@ -1,22 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN"> <!-- 改为中文语言标识，更贴合内容场景 -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- 增强移动端适配 -->
     <title>cserwen's site</title>
-    <style type="text/css" >
+    <style type="text/css">
+        /* 重置默认样式，消除不同浏览器的边距差异，利于移动端适配 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh; /* 让body占满整个视口高度，方便垂直布局 */
+            position: relative; /* 作为绝对定位子元素的参考 */
+        }
+
         #apps {
             display: flex;
             justify-content: space-around;
             align-items: center;
             width: 200px;
             height: 100px;
+            /* 替代原来的硬编码定位，实现响应式垂直水平居中 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .icon {
             width: 40px;
+            height: 40px; /* 增加高度，保证图片正圆不拉伸 */
             border-radius: 50%;
+            object-fit: cover; /* 防止图片变形 */
         }
 
         .app {
@@ -27,12 +46,13 @@
             margin: 0 10px;
         }
 
-        .app a{
+        .app a {
             text-decoration: none;
             color: burlywood;
+            font-size: 14px; /* 适配手机端文字大小 */
         }
 
-        .app a:hover{
+        .app a:hover {
             text-decoration: underline;
         }
 
@@ -45,46 +65,63 @@
             color: #ff9900;
             text-decoration: underline;
         }
+
+        /* 底部版权区域样式，专门适配居中且响应式 */
+        .copyright {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0; /* 左右设为0，配合width:100%实现全屏居中 */
+            width: 100%;
+            padding: 0 20px; /* 手机端左右留边，防止内容溢出 */
+            text-align: center; /* 实现内部内容水平居中 */
+            color: grey;
+            font-size: 12px; /* 适配手机端文字大小 */
+        }
     </style>
 </head>
 <body>
-    <div style="position: absolute; top: calc(50% - 100px); left: calc(50% - 100px);">
-        <div id="apps">
-            <div class="item">
-                <div style="text-align: center;">
-                    <img src="./icons/blog.jpeg" class="icon" />
-                </div>
-                <div class="app">
-                    <a href="https://blog.cserwen.com" target="_blank">博客</a>
-                </div>
+    <div id="apps">
+        <div class="item">
+            <div style="text-align: center;">
+                <img src="./icons/blog.jpeg" class="icon" alt="博客图标" /> <!-- 增加alt属性，提升可访问性 -->
             </div>
-            <div class="item">
-                <div style="text-align: center;">
-                    <img src="./icons/GitHub.png" class="icon" />
-                </div>
-                <div class="app">
-                    <a href="https://github.com/cserwen" target="_blank">
-                        GitHub
-                    </a>
-                </div>
+            <div class="app">
+                <a href="https://blog.cserwen.com" target="_blank">博客</a>
             </div>
-            <div class="item">
-                <div style="text-align: center;">
-                    <img src="./icons/bilibili.png" class="icon" />
-                </div>
-                <div class="app">
-                    <a href="https://space.bilibili.com/258391501/" target="_blank">
-                        BiliBili
-                    </a>
-                </div>
+        </div>
+        <div class="item">
+            <div style="text-align: center;">
+                <img src="./icons/GitHub.png" class="icon" alt="GitHub图标" />
+            </div>
+            <div class="app">
+                <a href="https://github.com/cserwen" target="_blank">GitHub</a>
+            </div>
+        </div>
+        <div class="item">
+            <div style="text-align: center;">
+                <img src="./icons/bilibili.png" class="icon" alt="Bilibili图标" />
+            </div>
+            <div class="app">
+                <a href="https://space.bilibili.com/258391501/" target="_blank">BiliBili</a>
             </div>
         </div>
     </div>
-    <div style="position: absolute; bottom: 30px; left: calc(50% - 290px);">
-        <div style="width: 600px; text-align: center; color: grey;">
-            <span>Copyrights © 2019-2021 litterboys</span>
-            <a href="https://beian.miit.gov.cn/#/Integrated/index" class="link" target="_blank">冀ICP备20003509号</a>
-        </div>
+
+    <!-- 底部版权区域，重构结构方便居中及动态更新 -->
+    <div class="copyright">
+        <span>Copyrights © 2019-<span id="currentYear"></span> litterboys</span>
+        <a href="https://beian.miit.gov.cn/#/Integrated/index" class="link" target="_blank">冀ICP备20003509号</a>
     </div>
+
+    <!-- JavaScript 实现年份自动更新 -->
+    <script>
+        // 获取当前年份并插入到页面中
+        window.onload = function() {
+            const currentYearElement = document.getElementById('currentYear');
+            const currentYear = new Date().getFullYear(); // 获取当前完整年份（4位数字）
+            currentYearElement.textContent = currentYear;
+        }
+    </script>
 </body>
 </html>
